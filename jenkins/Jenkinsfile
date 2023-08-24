@@ -6,12 +6,12 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+        stage('Deploy') {
             when {
-        expression {
-            params.choice == 'deploy'
-        }
-    }
+                expression {
+                    params.choice == 'deploy'
+                }
+            }
             steps {
                 withAWS(role:"jenkins", roleSessionName: "role", useNode: true){
                     sh """
@@ -28,12 +28,13 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
-            steps {
-                echo 'Testing...'
+        
+        stage('Destroy') {
+            when {
+                expression {
+                    params.choice =='destroy'
+                }
             }
-        }
-        stage('Deploy') {
             steps {
                 echo 'Deplying...'
             }
