@@ -2,7 +2,7 @@ pipeline {
     agent any
 
      parameters {
-        choice(name: 'choice', choices: ['deploy','destroy'], description: 'choose a value')
+        choice(name: 'choice', choices: ['','deploy','destroy'], description: 'choose a value')
     }
 
     stages {
@@ -36,7 +36,8 @@ pipeline {
                 }
             }
             steps {
-                echo 'Deplying...'
+                INSTANCE_ID   = sh(script: "aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=demo-server" --query "Reservations[].Instances[].InstanceId" --output text", returnStdout: true).trim()
+                echo INSTANCE_ID
             }
         }
     }
