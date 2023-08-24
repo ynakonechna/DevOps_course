@@ -52,7 +52,8 @@ pipeline {
                 script {
                     INSTANCE_ID   = sh(script: """aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=demo-server" --query "Reservations[].Instances[].InstanceId" --output text""", returnStdout: true).trim()
                     INSTANCE_IP   = sh(script: """aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=demo-server" --query "Reservations[].Instances[].PublicIpAddress" --output text""", returnStdout: true).trim()
-                    sh "aws ec2 wait instance-running --instance-ids $INSTANCE_ID"
+                    echo INSTANCE_ID
+                    sh "aws ec2 wait instance-running --instance-ids ${INSTANCE_ID}"
                     sh """
                         ssh -i ${env.SSH_CREDENTIALS} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
                         ubuntu@${INSTANCE_IP} 'ls -al'
