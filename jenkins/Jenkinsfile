@@ -7,6 +7,11 @@ pipeline {
 
     stages {
         stage('Build') {
+            when {
+        expression {
+            params.choice == 'deploy'
+        }
+    }
             steps {
                 withAWS(role:"jenkins", roleSessionName: "role", useNode: true){
                     sh """
