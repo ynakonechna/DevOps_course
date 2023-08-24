@@ -9,7 +9,7 @@ pipeline {
                     aws ec2 run-instances \
     --image-id ami-08766f81ab52792ce \
     --count 1 \
-    --instance-type t2.micro \
+    --instance-type t3.micro \
     --key-name j_key \
     --security-group-ids sg-05e0eaab7ba23bf57 \
     --subnet-id subnet-071874fe08c34005a \
