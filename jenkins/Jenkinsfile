@@ -16,8 +16,7 @@ pipeline {
                 script {
                  withAWS(role:"jenkins", roleSessionName: "role", useNode: true){
                     INSTANCE_ID   = sh(script: """aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=demo-server" --query "Reservations[].Instances[].InstanceId" --output text""", returnStdout: true).trim()
-                    echo "y${INSTANCE_ID}y" 
-                     if (INSTANCE_ID != '') {
+                     if (INSTANCE_ID == '') {
                         sh """
                     aws ec2 run-instances --user-data \$(base64 -w 0 jenkins/userdata) \
     --image-id ami-08766f81ab52792ce \
