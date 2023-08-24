@@ -12,9 +12,12 @@ pipeline {
                     params.choice == 'deploy'
                 }
             }
-            steps {
-                withAWS(role:"jenkins", roleSessionName: "role", useNode: true){
-                    sh """
+            steps { 
+                script {
+                 withAWS(role:"jenkins", roleSessionName: "role", useNode: true){
+                    INSTANCE_ID   = sh(script: """aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=demo-server" --query "Reservations[].Instances[].InstanceId" --output text""", returnStdout: true).trim()
+                    if INSTANCE_ID != '' {
+                        sh """
                     aws ec2 run-instances \
     --image-id ami-08766f81ab52792ce \
     --count 1 \
@@ -25,7 +28,11 @@ pipeline {
     --block-device-mappings '[{\"DeviceName\":\"/dev/sdf\",\"Ebs\":{\"VolumeSize\":30,\"DeleteOnTermination\":true}}]' \
     --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=demo-server}]' 'ResourceType=volume,Tags=[{Key=Name,Value=demo-server-disk}]'
                     """
+                    }
+                    
                 }
+                }
+               
             }
         }
         
@@ -37,8 +44,11 @@ pipeline {
             }
             steps {
                 script {
-                    INSTANCE_ID   = sh(script: """aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=demo-server" --query "Reservations[].Instances[].InstanceId" --output text""", returnStdout: true).trim()
-                    echo INSTANCE_ID
+                    withAWS(role:"jenkins", roleSessionName: "role", useNode: true){
+                        INSTANCE_ID   = sh(script: """aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=demo-server" --query "Reservations[].Instances[].InstanceId" --output text""", returnStdout: true).trim()
+                        echo INSTANCE_ID
+                    }
+                    
                 }
             }
         }
