@@ -57,7 +57,7 @@ pipeline {
                     sh "aws ec2 wait instance-running --instance-ids ${INSTANCE_ID}"
                     sh """
                         ssh -i ${env.SSH_CREDENTIALS} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-                        ubuntu@${INSTANCE_IP} 'ls -al'
+                        ubuntu@${INSTANCE_IP} 'sudo apt-get update && sudo apt-get install nginx -y'
                     """
                 }
             }
