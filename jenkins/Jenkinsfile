@@ -19,7 +19,7 @@ pipeline {
                      if (INSTANCE_ID == '') {
                         sh """
                     aws ec2 run-instances --user-data \$(base64 -w 0 jenkins/userdata) \
-    --image-id ami-08766f81ab52792ce \
+    --image-id ami-0cea4844b980fe49e \
     --count 1 \
     --instance-type t3.micro \
     --key-name j_key \
