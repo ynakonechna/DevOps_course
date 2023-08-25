@@ -3,3 +3,10 @@
 git status [<options>] [<file>...
 
 The 'git status' command is used in Git to display the current state of your directory and its relation to the Git repository.
+
+<options>
+-s: Provides a shorter, more compact output format.
+-b: Displays additional information about the branch status.
+-u: Specifies how untracked file are displayed.
+-v: Displays more detailed information.
+-uno: Hides untracked files from the status output.
