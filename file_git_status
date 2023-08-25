@@ -10,3 +10,8 @@ The 'git status' command is used in Git to display the current state of your dir
 -u: Specifies how untracked file are displayed.
 -v: Displays more detailed information.
 -uno: Hides untracked files from the status output.
+
+git status
+git status -s
+git status -u all
+git status -b
