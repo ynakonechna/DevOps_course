@@ -1,3 +1,5 @@
 #command git status
 
-git status [<options>] [<file>...]
+git status [<options>] [<file>...
+
+The 'git status' command is used in Git to display the current state of your directory and its relation to the Git repository.
