@@ -1,0 +1,9 @@
+FROM alpine:latest
+
+RUN apk update && \
+apk add apache2 && \
+echo 'Hi there, what is love?' > /var/www/localhost/htdocs/index.html && \
+echo 'It is just a song ...' > /var/www/localhost/htdocs/index.html
+
+CMD ["/usr/sbin/apache2ctl", "-DFOREGROUND"]
+EXPOSE 80
