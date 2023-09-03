@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ "$#" -ne 2 ]; then
+    echo "Please run the command in this format: $0 <path data folder> <path backup folder>"
+    exit 1
+fi
+
+source_dir="$1"
+backup_dir="$2"
+log_file="/var/log/file_sync.log"  # Change this path to your desired log file location
+
+# Create the log file if it doesn't exist
+sudo touch "$log_file"
+sudo chmod 777 "$log_file"
+
+# Check for new files in source_dir and copy them to backup_dir
+rsync -a --update --ignore-existing --log-file="$log_file" "$source_dir/" "$backup_dir/"
+
+rsync -a --delete --log-file="$log_file" "$source_dir/" "$backup_dir/"

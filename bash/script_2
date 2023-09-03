@@ -1,0 +1,50 @@
+#!/bin/bash
+
+function ip {
+	awk '{print $1}' apache_logs | sort | uniq -c | sort -nr | head -n 1
+}
+
+function page {
+	awk '{print $7}' apache_logs | sort | uniq -c | sort -nr | head -n 1
+}
+
+function requests {
+	awk '{print $1}' apache_logs | sort | uniq -c | sort -nr
+}
+
+function non-existent {
+	grep '" 200 2385' apache_logs | awk -F '"' '{print $2}' | uniq -c
+}
+
+function timeI {
+	awk '{print $4}' apache_logs | cut -d':' -f2-3 | sort | uniq -c | sort -nr| head -n 1
+}
+
+function bots {
+	awk '/(bingbot|Googlebot|YandexBot)/ {print $1, $12}' apache_logs
+}
+
+if [ "$#" == "0" ]; then
+	echo Available arguments:
+	echo --ip: display from which IP address there were the most requests
+	echo --page: display the most requested page
+	echo --requests: display how many requests were there from each IP address
+	echo --non-existent: display what non-existent pages clients were referred to
+	echo --time: display the time when the site received the most requests
+	echo --bots: display which search bots have accessed the site
+fi
+
+case $1 in
+	--ip)
+		ip ;;
+	--page)
+		page ;;
+	--requests)
+		requests ;;
+	--time)
+		timeI ;;
+	--non-existent)
+		non-existent ;;
+	--bots)
+		bots ;;
+esac

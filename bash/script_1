@@ -1,0 +1,23 @@
+#!/bin/bash
+
+function all {
+        nmap -sn 10.0.2.15/24
+}
+
+function target {
+        ss -tln
+}
+
+
+if [ "$#" == "0" ]; then
+	echo Available arguments:
+	echo --all: displays the IP addresses and symbolic names of all hosts in the current subnet
+        echo --target: displays a list of open system TCP ports
+fi
+
+case $1 in
+	--all)
+		all ;;
+	--target)
+		target ;;
+esac
